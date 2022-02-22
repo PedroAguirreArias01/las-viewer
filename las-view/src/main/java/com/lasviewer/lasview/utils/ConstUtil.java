@@ -8,4 +8,5 @@ public class ConstUtil {
 	public static final String DATA_CURVE = "~A";
 	public static final String PARAMETER_INFO = "~P";
 	public static final String OTHER_INFO ="~O";
+	public static final String VALUE_NULL = "-999.2500";
 }
