@@ -125,7 +125,7 @@ public class ReadFileLas {
 	}
 	
 	private void getInformationWell(String info) {
-		//logger.info(info);
+		logger.info(info);
 	}
 	
 	private void getCurveInfo(String info) {
@@ -134,7 +134,7 @@ public class ReadFileLas {
 	}
 	
 	private void getDataCurve(String info) {
-		logger.info(info);
+		//logger.info(info);
 	}
 	
 	private void initInfoWell(String info) {
