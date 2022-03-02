@@ -1,10 +1,15 @@
 package com.lasviewer.lasview.models.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -23,7 +28,12 @@ public class CurveData implements Serializable{
 	private Long Value;
 	private Long depth;
 	@Column(name = "fk_curve_information_param")
+	@ManyToOne
+	@JoinColumn(name = "name")
 	private CurveInformationParam curveInformationParam;
+	
+	 @OneToMany(mappedBy = "curveData")
+	  private Set<LogWell> listLogWell = new HashSet<>();
 	
 	public CurveData() {
 		super();
@@ -54,6 +64,14 @@ public class CurveData implements Serializable{
 
 	public void setIdCurveData(Long idCurveData) {
 		this.idCurveData = idCurveData;
+	}
+
+	public Set<LogWell> getListLogWell() {
+		return listLogWell;
+	}
+
+	public void setListLogWell(Set<LogWell> listLogWell) {
+		this.listLogWell = listLogWell;
 	}
 	
 	

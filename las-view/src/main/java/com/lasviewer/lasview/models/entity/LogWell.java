@@ -3,9 +3,12 @@ package com.lasviewer.lasview.models.entity;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,15 +22,21 @@ public class LogWell implements Serializable{
 	
 	@Id
 	private Date log_date;
-	@Column(name = "fk_curve_data")
-	private CurveData curveData;
-	@Column(name = "fk_well")
-	private WellInformation WellInformation;
 	@Column(name = "start_depth")
 	private Double startDepth;
 	@Column(name = "end_depth")
 	private Double endDepth;
 	private Double step;
+	
+	@Column(name = "fk_curve_data")
+	@ManyToOne
+    @JoinColumn(name = "id_curve_data")
+	private CurveData curveData;
+	
+	@Column(name = "fk_well")
+	@ManyToOne
+	@JoinColumn(name = "id_well")
+	private WellInformation WellInformation;
 	
 	
 	public LogWell() {

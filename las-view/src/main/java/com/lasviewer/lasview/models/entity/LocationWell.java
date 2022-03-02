@@ -1,11 +1,15 @@
 package com.lasviewer.lasview.models.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "LOCATION_WELL")
@@ -27,7 +31,17 @@ public class LocationWell implements Serializable{
 	private String township;
 	private String range;
 	
+	@OneToMany(mappedBy="locationWell")
+    private Set<WellInformation> listWell = new HashSet<>();
 	
+	public Set<WellInformation> getListWell() {
+		return listWell;
+	}
+
+	public void setListWell(Set<WellInformation> listWell) {
+		this.listWell = listWell;
+	}
+
 	public LocationWell() {
 		super();
 	}
