@@ -28,12 +28,12 @@ public class LogWell implements Serializable{
 	private Double endDepth;
 	private Double step;
 	
-	@Column(name = "fk_curve_data")
+//	@Column(name = "fk_curve_data")
 	@ManyToOne
     @JoinColumn(name = "id_curve_data")
 	private CurveData curveData;
 	
-	@Column(name = "fk_well")
+//	@Column(name = "fk_well")
 	@ManyToOne
 	@JoinColumn(name = "id_well")
 	private WellInformation WellInformation;

@@ -27,13 +27,13 @@ public class CurveData implements Serializable{
 	private Long idCurveData;
 	private Long Value;
 	private Long depth;
-	@Column(name = "fk_curve_information_param")
+	//@Column(name = "fk_curve_information_param")
 	@ManyToOne
 	@JoinColumn(name = "name")
 	private CurveInformationParam curveInformationParam;
 	
 	 @OneToMany(mappedBy = "curveData")
-	  private Set<LogWell> listLogWell = new HashSet<>();
+	 private Set<LogWell> listLogWell = new HashSet<>();
 	
 	public CurveData() {
 		super();

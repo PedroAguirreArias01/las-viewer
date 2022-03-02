@@ -56,9 +56,5 @@ public class CurveInformationParam implements Serializable{
 	public void setListCurveDatas(Set<CurveData> listCurveDatas) {
 		this.listCurveDatas = listCurveDatas;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
 }

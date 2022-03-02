@@ -36,7 +36,6 @@ public class WellInformation  implements Serializable{
     private LocationWell locationWell;
     
 	public WellInformation() {
-		super();
 	}
 	
 	public String getIdWell() {
