@@ -26,7 +26,7 @@ public class WellInformation  implements Serializable{
 	private String idWell;
 	@Column(name = "name_well")
 	private String nameWell;
-	private String description;
+	private String company;
 
     @OneToMany(mappedBy = "WellInformation")
     private Set<LogWell> listLogWell = new HashSet<>();
@@ -50,11 +50,13 @@ public class WellInformation  implements Serializable{
 	public void setNameWell(String nameWell) {
 		this.nameWell = nameWell;
 	}
-	public String getDescription() {
-		return description;
+
+	public String getCompany() {
+		return company;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+
+	public void setCompany(String company) {
+		this.company = company;
 	}
 
 	public Set<LogWell> getListLogWell() {

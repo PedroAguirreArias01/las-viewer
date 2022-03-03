@@ -12,7 +12,9 @@ import java.util.Scanner;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.lasviewer.lasview.services.interfaces.ILasviewerService;
 import com.lasviewer.lasview.utils.ConstUtil;
 
 
@@ -31,6 +33,9 @@ public class ReadFileLas {
 	private boolean isCurveData;
 	private StringBuilder curveData = new StringBuilder();
 	private boolean isOtherInfo;
+	
+	@Autowired
+	private ILasviewerService lasviewerService;
 	
 	public void loadFile() {
 		listFilesForFolder().stream()
@@ -126,15 +131,17 @@ public class ReadFileLas {
 	
 	private void getInformationWell(String info) {
 		logger.info(info);
+		
 	}
 	
 	private void getCurveInfo(String info) {
-		//logger.info(this.curveInfo .append(info).append("\n").toString());
+		logger.info(this.curveInfo .append(info).append("\n").toString());
 		
 	}
 	
 	private void getDataCurve(String info) {
 		//logger.info(info);
+		
 	}
 	
 	private void initInfoWell(String info) {
