@@ -1,5 +1,7 @@
 package com.lasviewer.lasview.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +68,17 @@ public class LasviewerServiceImpl implements ILasviewerService{
 	public void saveWellInforation(WellInformation wellInformation) {
 		wellInformationDao.save(wellInformation);
 		
+	}
+
+	@Override
+	public List<CurveInformationParam> getAllCurveInformationParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean existsCurveInformationParams(String name) {
+		return curveInformationParamDao.existsById(name);
 	}
 
 }

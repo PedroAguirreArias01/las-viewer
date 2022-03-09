@@ -1,5 +1,7 @@
 package com.lasviewer.lasview.services.interfaces;
 
+import java.util.List;
+
 import com.lasviewer.lasview.models.entity.CurveData;
 import com.lasviewer.lasview.models.entity.CurveInformationParam;
 import com.lasviewer.lasview.models.entity.LocationWell;
@@ -15,4 +17,6 @@ public interface ILasviewerService {
 	public void saveLogWell(LogWell logWell);
 	public void saveUser(User user);
 	public void saveWellInforation(WellInformation wellInformation);
+	public List<CurveInformationParam> getAllCurveInformationParams();
+	public Boolean existsCurveInformationParams(String name);
 }

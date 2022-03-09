@@ -12,6 +12,7 @@ public class LasViewApplication {
 		SpringApplication.run(LasViewApplication.class, args);
 		ReadFileLas readFileLas = new ReadFileLas();
 		readFileLas.loadFile();
+		readFileLas.processCurverParams();
 	}
 
 }

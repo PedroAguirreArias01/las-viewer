@@ -13,11 +13,13 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.lasviewer.lasview.models.entity.CurveInformationParam;
 import com.lasviewer.lasview.services.interfaces.ILasviewerService;
 import com.lasviewer.lasview.utils.ConstUtil;
 
-
+@Component
 public class ReadFileLas {
 
 	public static final String RESOURCE = "/lasFiles/";
@@ -29,13 +31,23 @@ public class ReadFileLas {
 	StringBuilder wellInfo = new StringBuilder();
 	private boolean isCurverInfo;
 	private boolean isParameter;
-	private StringBuilder curveInfo = new StringBuilder();
 	private boolean isCurveData;
-	private StringBuilder curveData = new StringBuilder();
 	private boolean isOtherInfo;
 	
 	@Autowired
 	private ILasviewerService lasviewerService;
+	
+	private List<String> listCurveParams;
+	private List<String> listCurveData;
+	private List<String> listLocationWell;
+	private List<String> listWellInformation;
+	
+	public ReadFileLas() {
+		this.listCurveParams = new ArrayList<>();
+		this.listCurveData = new ArrayList<>();
+		this.listLocationWell = new ArrayList<>();
+		this.listWellInformation = new ArrayList<>();
+	}
 	
 	public void loadFile() {
 		listFilesForFolder().stream()
@@ -100,6 +112,7 @@ public class ReadFileLas {
 				}
 			}
 			scanner.close();
+			this.clearList();
 		} catch (IOException ex) {
 			logger.info(ReadFileLas.class.getName());
 		}
@@ -130,13 +143,12 @@ public class ReadFileLas {
 	}
 	
 	private void getInformationWell(String info) {
-		logger.info(info);
+		//logger.info(info);
 		
 	}
 	
 	private void getCurveInfo(String info) {
-		logger.info(this.curveInfo .append(info).append("\n").toString());
-		
+		this.listCurveParams.add(info);
 	}
 	
 	private void getDataCurve(String info) {
@@ -146,5 +158,34 @@ public class ReadFileLas {
 	
 	private void initInfoWell(String info) {
 		//logger.info(info);
+	}
+	
+	public void processCurverParams() {
+		listCurveParams.remove(0);
+		for (String param : listCurveParams) {
+			String[] aux = param.split("[.]", 0);
+			String nameParam = aux[0];
+			String units = aux[1].split(" ", 0)[0];
+			String description = aux[1].split(":")[1];
+			if(!this.lasviewerService.existsCurveInformationParams(nameParam)) {
+				CurveInformationParam curveInformationParam = new CurveInformationParam();
+				curveInformationParam.setDescription(description);
+				curveInformationParam.setName(nameParam);
+				curveInformationParam.setUnits(units);
+				this.lasviewerService.saveCurveInformationParams(curveInformationParam);
+			}
+		}
+	}
+
+	public void proccessCurveData() {
+		
+		
+	}
+	
+	private void clearList() {
+		this.listCurveParams = new ArrayList<>();
+		this.listCurveData = new ArrayList<>();
+		this.listLocationWell = new ArrayList<>();
+		this.listWellInformation = new ArrayList<>();
 	}
 }
