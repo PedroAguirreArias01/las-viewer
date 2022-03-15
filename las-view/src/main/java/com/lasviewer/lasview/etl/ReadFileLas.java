@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.lasviewer.lasview.models.entity.CurveInformationParam;
+import com.lasviewer.lasview.models.entity.LocationWell;
+import com.lasviewer.lasview.models.entity.WellInformation;
 import com.lasviewer.lasview.services.interfaces.ILasviewerService;
 import com.lasviewer.lasview.utils.ConstUtil;
 
@@ -112,7 +114,7 @@ public class ReadFileLas {
 				}
 			}
 			scanner.close();
-			this.clearList();
+			//this.clearList();
 		} catch (IOException ex) {
 			logger.info(ReadFileLas.class.getName());
 		}
@@ -143,7 +145,9 @@ public class ReadFileLas {
 	}
 	
 	private void getInformationWell(String info) {
-		//logger.info(info);
+		logger.info("Aqui");
+		logger.info(info);
+		this.listWellInformation.add(info);
 		
 	}
 	
@@ -159,6 +163,10 @@ public class ReadFileLas {
 	private void initInfoWell(String info) {
 		//logger.info(info);
 	}
+	
+	//private void initLocationWell(String info) {
+	//	this.listLocationWell.add(info);
+	//}
 	
 	public void processCurverParams() {
 		listCurveParams.remove(0);
@@ -180,6 +188,46 @@ public class ReadFileLas {
 	public void proccessCurveData() {
 		
 		
+	}
+	
+	public void processLocationWell() {
+		LocationWell locationwell = new LocationWell();
+		for (String param : listWellInformation) {
+			String[] aux = param.split("[.]", 0);
+			String nameParam = aux[0];
+			if (nameParam.equals(ConstUtil.FIELD_WELL)) {
+				locationwell.setField(aux[1].split(":")[0].trim());
+			} else if (nameParam.equals(ConstUtil.LOCATION_WELL)) {
+				locationwell.setLocation(aux[1].split(":")[0].trim());
+			} else if (nameParam.equals(ConstUtil.COUNTRY_WELL)) {
+				locationwell.setCounty((aux[1].split(":")[0].trim()));
+			} else if (nameParam.equals(ConstUtil.STATE_WELL)) {
+				locationwell.setState((aux[1].split(":")[0].trim()));
+			} else if (nameParam.equals(ConstUtil.SECTION_WELL)) {
+				locationwell.setSection((aux[1].split(":")[0].trim()));
+			} else if (nameParam.equals(ConstUtil.TOWNSHIP_WELL)) {
+				locationwell.setTownship((aux[1].split(":")[0].trim()));
+			} else if (nameParam.equals(ConstUtil.RANGE_WELL)) {
+				locationwell.setRangeWell((aux[1].split(":")[0].trim()));
+			};
+		}
+		this.lasviewerService.saveLocationWell(locationwell);
+	}
+	
+	public void processWellInformation() {
+		for (String param : listWellInformation) {
+			String[] aux = param.split("[.]", 0);
+			String nameParam = aux[0];
+			WellInformation wellinformation = new WellInformation();
+			if (nameParam.equals(ConstUtil.ID_WELL)) {
+				wellinformation.setIdWell(aux[1].split(":")[0].trim());
+			} else if (nameParam.equals(ConstUtil.NAME_WELL)) {
+				wellinformation.setNameWell(aux[1].split(":")[0].trim());
+			} else if (nameParam.equals(ConstUtil.COMPANY_WELL)) {
+				wellinformation.setCompany(aux[1].split(":")[0].trim());
+			};
+			this.lasviewerService.saveWellInforation(wellinformation);
+		}
 	}
 	
 	private void clearList() {

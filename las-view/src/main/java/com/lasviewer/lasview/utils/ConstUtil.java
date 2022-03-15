@@ -23,12 +23,12 @@ public class ConstUtil {
 	
 	
 	// LOCATION_WELL
-	public static final String LOCATION_WELL = "LOC";
 	public static final String FIELD_WELL = "FLD";
+	public static final String LOCATION_WELL = "LOC";
+	public static final String COUNTRY_WELL = "CNTY";
 	public static final String STATE_WELL = "STAT";
 	public static final String SECTION_WELL = "SECT";
 	public static final String TOWNSHIP_WELL = "TOWN";
-	public static final String COUNTRY_WELL = "CNTY";
 	public static final String RANGE_WELL = "RANG";
 	
 	

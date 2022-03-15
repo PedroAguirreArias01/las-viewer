@@ -32,7 +32,8 @@ public class LocationWell implements Serializable{
 	private String state;
 	private String section;
 	private String township;
-	private String range;
+	@Column(name = "range_well")
+	private String rangeWell;
 	
 	@OneToMany(mappedBy="locationWell")
     private Set<WellInformation> listWell = new HashSet<>();
@@ -91,12 +92,15 @@ public class LocationWell implements Serializable{
 	public void setTownship(String township) {
 		this.township = township;
 	}
-	public String getRange() {
-		return range;
+
+	public String getRangeWell() {
+		return rangeWell;
 	}
-	public void setRange(String range) {
-		this.range = range;
+
+	public void setRangeWell(String rangeWell) {
+		this.rangeWell = rangeWell;
 	}
+	
 	
 
 }
