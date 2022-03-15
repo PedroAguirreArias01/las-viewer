@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,9 +26,10 @@ public class CurveData implements Serializable{
 	
 	@Id
 	@Column(name = "id_curve_data")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCurveData;
-	private Long Value;
-	private Long depth;
+	private Double Value;
+	private Double depth;
 	//@Column(name = "fk_curve_information_param")
 	@ManyToOne
 	@JoinColumn(name = "name")
@@ -39,18 +42,27 @@ public class CurveData implements Serializable{
 		super();
 	}
 	
-	public Long getValue() {
+	
+	public Double getValue() {
 		return Value;
 	}
-	public void setValue(Long value) {
+
+
+	public void setValue(Double value) {
 		Value = value;
 	}
-	public Long getDepth() {
+
+
+	public Double getDepth() {
 		return depth;
 	}
-	public void setDepth(Long depth) {
+
+
+	public void setDepth(Double depth) {
 		this.depth = depth;
 	}
+
+
 	public CurveInformationParam getCurveInformationParam() {
 		return curveInformationParam;
 	}
