@@ -19,4 +19,5 @@ public interface ILasviewerService {
 	public void saveWellInforation(WellInformation wellInformation);
 	public List<CurveInformationParam> getAllCurveInformationParams();
 	public Boolean existsCurveInformationParams(String name);
+	public CurveInformationParam getCurveInformationParam(String name);
 }

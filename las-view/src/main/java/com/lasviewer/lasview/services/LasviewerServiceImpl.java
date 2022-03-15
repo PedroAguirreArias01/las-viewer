@@ -34,6 +34,8 @@ public class LasviewerServiceImpl implements ILasviewerService{
 	private IUserDAO userDao;
 	@Autowired
 	private IWellInformationDAO wellInformationDao;
+	
+	LasviewerServiceImpl(){}
 
 	@Override
 	public void saveCurveData(CurveData curveData) {
@@ -79,6 +81,11 @@ public class LasviewerServiceImpl implements ILasviewerService{
 	@Override
 	public Boolean existsCurveInformationParams(String name) {
 		return curveInformationParamDao.existsById(name);
+	}
+
+	@Override
+	public CurveInformationParam getCurveInformationParam(String name) {
+		return curveInformationParamDao.findById(name).orElse(null);
 	}
 
 }

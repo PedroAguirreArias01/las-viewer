@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lasviewer.lasview.models.entity.CurveData;
 import com.lasviewer.lasview.models.entity.CurveInformationParam;
 import com.lasviewer.lasview.models.entity.LocationWell;
 import com.lasviewer.lasview.models.entity.WellInformation;
@@ -26,7 +27,7 @@ public class ReadFileLas {
 
 	public static final String RESOURCE = "/lasFiles/";
 	public static final Logger logger = LoggerFactory.getLogger(ReadFileLas.class);
-	
+
 	private boolean isInitSectionInfo;
 	private boolean isWellInfo;
 	StringBuilder result = new StringBuilder();
@@ -35,22 +36,22 @@ public class ReadFileLas {
 	private boolean isParameter;
 	private boolean isCurveData;
 	private boolean isOtherInfo;
-	
+
 	@Autowired
 	private ILasviewerService lasviewerService;
-	
+
 	private List<String> listCurveParams;
 	private List<String> listCurveData;
 	private List<String> listLocationWell;
 	private List<String> listWellInformation;
-	
+
 	public ReadFileLas() {
 		this.listCurveParams = new ArrayList<>();
 		this.listCurveData = new ArrayList<>();
 		this.listLocationWell = new ArrayList<>();
 		this.listWellInformation = new ArrayList<>();
 	}
-	
+
 	public void loadFile() {
 		listFilesForFolder().stream()
 				.map(pathFile -> ReadFileLas.class.getResourceAsStream(String.format(RESOURCE.concat("%s"), pathFile)))
@@ -68,53 +69,52 @@ public class ReadFileLas {
 					initInfoWell(line);
 					this.isInitSectionInfo = true;
 				} else {
-					while(scanner.hasNextLine()) {
-						if(this.isInitSectionInfo) {
-							if(line.startsWith(ConstUtil.WELL_INFO)) {
+					while (scanner.hasNextLine()) {
+						if (this.isInitSectionInfo) {
+							if (line.startsWith(ConstUtil.WELL_INFO)) {
 								this.isInitSectionInfo = false;
 								this.isWellInfo = true;
 								break;
 							}
 							initInfoWell(line);
-						}else if(this.isWellInfo) {
-							if(line.startsWith(ConstUtil.CURVE_INFO)) {
+						} else if (this.isWellInfo) {
+							if (line.startsWith(ConstUtil.CURVE_INFO)) {
 								this.isWellInfo = false;
 								this.isCurverInfo = true;
 								break;
 							}
 							getInformationWell(line);
-						} else if(this.isCurverInfo) {
-							if(line.startsWith(ConstUtil.PARAMETER_INFO)) {
+						} else if (this.isCurverInfo) {
+							if (line.startsWith(ConstUtil.PARAMETER_INFO)) {
 								this.isCurverInfo = false;
 								this.isParameter = true;
 								break;
 							}
 							getCurveInfo(line);
-						}else if(this.isParameter) {
-							if(line.startsWith(ConstUtil.OTHER_INFO)) {
+						} else if (this.isParameter) {
+							if (line.startsWith(ConstUtil.OTHER_INFO)) {
 								this.isParameter = false;
 								this.isOtherInfo = true;
 								break;
 							}
-						}else if(this.isOtherInfo) {
-							if(line.startsWith(ConstUtil.DATA_CURVE)) {
+						} else if (this.isOtherInfo) {
+							if (line.startsWith(ConstUtil.DATA_CURVE)) {
 								this.isOtherInfo = false;
 								this.isCurveData = true;
 								break;
 							}
-						}else if(this.isCurveData){
+						} else if (this.isCurveData) {
 							getDataCurve(line);
-					
+
 						}
 						line = scanner.nextLine();
-						
+
 					}
 					getDataCurve(line);
 
 				}
 			}
 			scanner.close();
-			//this.clearList();
 		} catch (IOException ex) {
 			logger.info(ReadFileLas.class.getName());
 		}
@@ -143,25 +143,24 @@ public class ReadFileLas {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getInformationWell(String info) {
 		logger.info("Aqui");
 		logger.info(info);
 		this.listWellInformation.add(info);
 		
 	}
-	
+
 	private void getCurveInfo(String info) {
 		this.listCurveParams.add(info);
 	}
-	
+
 	private void getDataCurve(String info) {
-		//logger.info(info);
-		
+		this.listCurveData.add(info.trim().replaceAll("\\s{2,}", ","));
 	}
-	
+
 	private void initInfoWell(String info) {
-		//logger.info(info);
+		// logger.info(info);
 	}
 	
 	//private void initLocationWell(String info) {
@@ -175,7 +174,7 @@ public class ReadFileLas {
 			String nameParam = aux[0];
 			String units = aux[1].split(" ", 0)[0];
 			String description = aux[1].split(":")[1];
-			if(!this.lasviewerService.existsCurveInformationParams(nameParam)) {
+			if (this.lasviewerService.existsCurveInformationParams(nameParam) != null && !this.lasviewerService.existsCurveInformationParams(nameParam)) {
 				CurveInformationParam curveInformationParam = new CurveInformationParam();
 				curveInformationParam.setDescription(description);
 				curveInformationParam.setName(nameParam);
@@ -186,8 +185,23 @@ public class ReadFileLas {
 	}
 
 	public void proccessCurveData() {
-		
-		
+		String[] headNames= listCurveData.get(4).substring(3).split(",");
+		logger.info("headers: "+listCurveData.get(4).substring(3));
+		for (int j = 5; j < listCurveData.size(); j++) {
+			logger.info("data: "+listCurveData.get(j));
+			String[] auxData = listCurveData.get(j).split(",");
+			Double depth = Double.parseDouble(auxData[0]);
+			for (int k = 1; k < headNames.length; k++) {
+				CurveData curveData = new CurveData();
+				CurveInformationParam param = this.lasviewerService.getCurveInformationParam(headNames[k]);
+				curveData.setDepth(depth);
+				curveData.setValue(Double.parseDouble(auxData[k]));
+				curveData.setCurveInformationParam(param);
+				this.lasviewerService.saveCurveData(curveData);
+			}
+			
+		}
+			
 	}
 	
 	public void processLocationWell() {
@@ -229,8 +243,8 @@ public class ReadFileLas {
 			this.lasviewerService.saveWellInforation(wellinformation);
 		}
 	}
-	
-	private void clearList() {
+
+	public void clearList() {
 		this.listCurveParams = new ArrayList<>();
 		this.listCurveData = new ArrayList<>();
 		this.listLocationWell = new ArrayList<>();
