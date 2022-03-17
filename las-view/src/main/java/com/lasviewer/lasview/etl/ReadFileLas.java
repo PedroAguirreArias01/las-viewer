@@ -238,10 +238,10 @@ public class ReadFileLas {
 	}
 	
 	public void processWellInformation() {
+		WellInformation wellinformation = new WellInformation();
 		for (String param : listWellInformation) {
 			String[] aux = param.split("[.]", 0);
 			String nameParam = aux[0];
-			WellInformation wellinformation = new WellInformation();
 			if (nameParam.equals(ConstUtil.ID_WELL)) {
 				wellinformation.setIdWell(aux[1].split(":")[0].trim());
 			} else if (nameParam.equals(ConstUtil.NAME_WELL)) {
@@ -249,8 +249,8 @@ public class ReadFileLas {
 			} else if (nameParam.equals(ConstUtil.COMPANY_WELL)) {
 				wellinformation.setCompany(aux[1].split(":")[0].trim());
 			};
-			this.lasviewerService.saveWellInforation(wellinformation);
 		}
+		this.lasviewerService.saveWellInforation(wellinformation);
 	}
 
 	public void clearList() {

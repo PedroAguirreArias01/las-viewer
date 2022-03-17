@@ -22,6 +22,8 @@ public class lasViewController {
 		readFileLas.loadFile();
 		readFileLas.processCurverParams();
 		readFileLas.proccessCurveData();
+		readFileLas.processLocationWell();
+		readFileLas.processWellInformation();
 		return new ResponseEntity("Hola Mundo!", HttpStatus.OK);
 	}
 }
