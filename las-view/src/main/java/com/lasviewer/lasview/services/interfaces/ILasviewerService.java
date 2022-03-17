@@ -20,4 +20,5 @@ public interface ILasviewerService {
 	public List<CurveInformationParam> getAllCurveInformationParams();
 	public Boolean existsCurveInformationParams(String name);
 	public CurveInformationParam getCurveInformationParam(String name);
+	public void insertDataCurve(Double value, Double depth, String name);
 }

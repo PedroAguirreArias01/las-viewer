@@ -74,8 +74,7 @@ public class LasviewerServiceImpl implements ILasviewerService{
 
 	@Override
 	public List<CurveInformationParam> getAllCurveInformationParams() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<CurveInformationParam>) curveInformationParamDao.findAll();
 	}
 
 	@Override
@@ -86,6 +85,12 @@ public class LasviewerServiceImpl implements ILasviewerService{
 	@Override
 	public CurveInformationParam getCurveInformationParam(String name) {
 		return curveInformationParamDao.findById(name).orElse(null);
+	}
+
+	@Override
+	public void insertDataCurve(Double value, Double depth, String name) {
+		curveDataDao.insertDataCurve(value, depth, name);
+		
 	}
 
 }

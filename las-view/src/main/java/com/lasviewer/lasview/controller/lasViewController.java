@@ -21,6 +21,7 @@ public class lasViewController {
 	public ResponseEntity<?> startAplication(){
 		readFileLas.loadFile();
 		readFileLas.processCurverParams();
+		readFileLas.proccessCurveData();
 		return new ResponseEntity("Hola Mundo!", HttpStatus.OK);
 	}
 }

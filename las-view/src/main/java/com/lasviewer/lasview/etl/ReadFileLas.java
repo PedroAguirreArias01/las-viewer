@@ -186,21 +186,30 @@ public class ReadFileLas {
 
 	public void proccessCurveData() {
 		String[] headNames= listCurveData.get(4).substring(3).split(",");
-		logger.info("headers: "+listCurveData.get(4).substring(3));
+		List<CurveInformationParam>  params = this.lasviewerService.getAllCurveInformationParams();
+		
 		for (int j = 5; j < listCurveData.size(); j++) {
-			logger.info("data: "+listCurveData.get(j));
 			String[] auxData = listCurveData.get(j).split(",");
 			Double depth = Double.parseDouble(auxData[0]);
-			for (int k = 1; k < headNames.length; k++) {
-				CurveData curveData = new CurveData();
-				CurveInformationParam param = this.lasviewerService.getCurveInformationParam(headNames[k]);
-				curveData.setDepth(depth);
-				curveData.setValue(Double.parseDouble(auxData[k]));
-				curveData.setCurveInformationParam(param);
-				this.lasviewerService.saveCurveData(curveData);
-			}
 			
+			for (int k = 1; k < headNames.length; k++) {
+				String nameParams = null;
+				CurveData curveData = new CurveData();
+				for (CurveInformationParam param : params) {
+					if(param.getName().equals(headNames[k])) {
+						nameParams = headNames[k];
+						curveData.setCurveInformationParam(param);
+						break;
+					}
+				}
+//				curveData.setDepth(depth);
+//				curveData.setValue(Double.parseDouble(auxData[k]));
+				logger.info(nameParams + "," + depth +","+auxData[k]);
+				//this.lasviewerService.saveCurveData(curveData);
+				this.lasviewerService.insertDataCurve(Double.parseDouble(auxData[k]), depth, nameParams);
+			}
 		}
+		logger.info("END: Proccess curve data");
 			
 	}
 	
